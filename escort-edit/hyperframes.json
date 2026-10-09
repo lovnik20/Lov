@@ -29,6 +29,11 @@
       "name": "glitch",
       "type": "hyperframes:block",
       "target": "compositions/glitch.html"
+    },
+    {
+      "name": "grain-overlay",
+      "type": "hyperframes:component",
+      "target": "compositions/components/grain-overlay.html"
     }
   ]
 }

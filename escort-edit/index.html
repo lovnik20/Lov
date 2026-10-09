@@ -73,6 +73,7 @@
         position: absolute;
         inset: 0;
         pointer-events: none;
+        opacity: 0.6;
       }
       #footage {
         position: absolute;
@@ -334,13 +335,75 @@
           <div data-hf-id="hf-zexo" class="camera-shake-frame" id="frame-b">
            <div data-hf-id="hf-pxem" class="camera-shake-rig" id="rig-b">
         <div data-hf-id="hf-ftaq" id="cam">
-          <video data-color-grading="{&quot;preset&quot;:&quot;deep-contrast&quot;,&quot;intensity&quot;:0.55,&quot;adjust&quot;:{&quot;exposure&quot;:-0.03,&quot;contrast&quot;:0.2,&quot;highlights&quot;:-0.08,&quot;shadows&quot;:-0.08,&quot;whites&quot;:0,&quot;blacks&quot;:-0.12,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0.06},&quot;details&quot;:{&quot;vignette&quot;:0.4,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.7,&quot;grain&quot;:0.22,&quot;grainSize&quot;:0.3,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0.12,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-6rd3" id="footage" class="clip" src="assets/source.mp4" playsinline data-has-audio="true" data-start="0" data-duration="29.33" data-track-index="0"></video>
+          <video data-hf-id="hf-6rd3" id="footage" class="clip" src="assets/source.mp4" playsinline data-has-audio="true" data-start="0" data-duration="29.33" data-track-index="0"></video>
         </div>
            </div>
           </div>
          </div>
         </div>
         <div data-hf-id="hf-jh4h" id="leak-host" data-composition-id="organic-light-leak-overlay" data-composition-src="compositions/organic-light-leak-overlay.html" data-start="20.9" data-duration="4.5" data-width="1080" data-height="1440" data-track-index="5"></div>
+        <!-- registry: grain-overlay -->
+        <div
+          id="grain-overlay"
+          style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+          "
+        >
+          <div class="grain-texture"></div>
+        </div>
+        
+        <style>
+          @keyframes hf-grain-noise {
+            0%,
+            100% {
+              transform: translate(0, 0);
+            }
+            10% {
+              transform: translate(-5%, -5%);
+            }
+            20% {
+              transform: translate(-10%, 5%);
+            }
+            30% {
+              transform: translate(5%, -10%);
+            }
+            40% {
+              transform: translate(-5%, 15%);
+            }
+            50% {
+              transform: translate(-10%, 5%);
+            }
+            60% {
+              transform: translate(15%, 0);
+            }
+            70% {
+              transform: translate(0, 10%);
+            }
+            80% {
+              transform: translate(-15%, 0);
+            }
+            90% {
+              transform: translate(10%, 5%);
+            }
+          }
+        
+          #grain-overlay .grain-texture {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+            animation: hf-grain-noise 0.5s steps(1) infinite;
+          }
+        </style>
         <div data-hf-id="hf-hmg5" id="flash"></div>
         <div data-hf-id="hf-eywn" id="br-tl" class="bracket"></div>
         <div data-hf-id="hf-b4a1" id="br-tr" class="bracket"></div>
@@ -431,12 +494,10 @@
       cameraShake(tl, "#rig-a", { profile: "rig-6d-shake", intensity: 0.7, duration: 29.33, at: 0, fps: 30 });
       cameraShake(tl, "#rig-b", { profile: "handheld-normal-strong", intensity: 0.6, duration: 15.5, at: 13.83, fps: 30 });
 
-      // ---- grade: exposure punch on every cut, bloom grows with the fire ----
+      // ---- exposure punch on every cut (grade itself is baked into assets/source.mp4) ----
       cuts.forEach((t) => {
-        tl.fromTo("#footage", { "--hf-color-grading-exposure": 0.7 }, { "--hf-color-grading-exposure": -0.03, duration: 0.4, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo("#cam", { filter: "brightness(1.7)" }, { filter: "brightness(1)", duration: 0.4, ease: "power2.out", immediateRender: false }, t);
       });
-      tl.fromTo("#footage", { "--hf-color-grading-bloom": 0.12 }, { "--hf-color-grading-bloom": 0.3, duration: 1.2, ease: "power2.out" }, 13.83);
-      tl.to("#footage", { "--hf-color-grading-bloom": 0.4, duration: 1.0, ease: "power2.out" }, 20.97);
 
       // ---- brackets ----
       tl.from(".bracket", { scale: 1.6, opacity: 0, duration: 0.6, stagger: 0.06, ease: "back.out(2)" }, 0.15);
@@ -476,7 +537,7 @@
         onUpdate: () => (document.getElementById("hp-num").textContent = Math.round(hp.v) + "%"),
       }, 0.8);
       tl.to("#hp-fill", { scaleX: 0.97, duration: 2.2, ease: "power1.in" }, 0.8);
-      tl.fromTo("#target", { opacity: 1 }, { opacity: 0.45, duration: 0.12, repeat: 5, yoyo: true, immediateRender: false }, 3.0);
+      tl.fromTo("#target .val, #hp-track", { opacity: 1 }, { opacity: 0.3, duration: 0.12, repeat: 5, yoyo: true, immediateRender: false }, 3.0);
       tl.to("#target", { xPercent: -120, duration: 0.5, ease: "power3.in" }, 6.7);
 
       // ---- status line ----

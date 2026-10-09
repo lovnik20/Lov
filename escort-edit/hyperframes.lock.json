@@ -1,5 +1,6 @@
 {
   "compositions/components/camera-shake.html": "3f64f5da225acb5b408847fef9c388f889b1bf1e8d85ec95f0f4316839a60db4",
+  "compositions/components/grain-overlay.html": "97a0da8f26feca9574abcf08b8186cef10ea4819b2aeabc30547ae16ed9ae80d",
   "compositions/flash-through-white.html": "0b5f25cd3eca2de71269475e1178a8a0667afa5f7bc08bb9cf80b49dd6f97596",
   "compositions/glitch.html": "2f88156e658780d2dd99e448ca11394820006371fb3115d10566da7cf16efb84",
   "compositions/organic-light-leak-overlay.html": "a7cf27b41d5fc99dea3748e94fe93ab04b94ad744aa5eefe030e756b54e495f0"
