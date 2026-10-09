@@ -1,2 +1,4 @@
 snapshots/
 .debug/
+renders/work-*/
+renders/.*

@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1080, height=1920" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
     <title>Escort Mission</title>
     <script src="assets/gsap.min.js"></script>
+    <script src="assets/camera-shake.js"></script>
     <style>
       @font-face {
         font-family: "Teko";
@@ -53,6 +54,26 @@
         position: absolute;
         inset: 0;
       }
+      /* registry: camera-shake */
+      .camera-shake-frame {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .camera-shake-rig {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+      .camera-shake-rig > * {
+        transform-style: preserve-3d;
+      }
+      #leak-host {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
       #footage {
         position: absolute;
         inset: 0;
@@ -60,25 +81,12 @@
         height: 100%;
         object-fit: cover;
       }
-      #vignette {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%);
-        pointer-events: none;
-      }
       #flash {
         position: absolute;
         inset: 0;
         background: #fff;
         opacity: 0;
         mix-blend-mode: screen;
-      }
-      #grain {
-        position: absolute;
-        inset: -200px;
-        opacity: 0.07;
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-        pointer-events: none;
       }
       .bracket {
         position: absolute;
@@ -319,92 +327,83 @@
     </style>
   </head>
   <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-width="1080"
-      data-height="1920"
-      data-duration="32.5"
-    >
-      <div id="stage">
-        <div id="cam">
-          <video
-            id="footage"
-            class="clip"
-            src="assets/source.mp4"
-            playsinline
-            data-has-audio="true"
-            data-start="0"
-            data-duration="29.33"
-            data-track-index="0"
-          ></video>
+    <div data-hf-id="hf-2zak" id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="32.5">
+      <div data-hf-id="hf-1rt5" id="stage">
+        <div data-hf-id="hf-aafb" class="camera-shake-frame" id="frame-a">
+         <div data-hf-id="hf-lzal" class="camera-shake-rig" id="rig-a">
+          <div data-hf-id="hf-zexo" class="camera-shake-frame" id="frame-b">
+           <div data-hf-id="hf-pxem" class="camera-shake-rig" id="rig-b">
+        <div data-hf-id="hf-ftaq" id="cam">
+          <video data-color-grading="{&quot;preset&quot;:&quot;deep-contrast&quot;,&quot;intensity&quot;:0.55,&quot;adjust&quot;:{&quot;exposure&quot;:-0.03,&quot;contrast&quot;:0.2,&quot;highlights&quot;:-0.08,&quot;shadows&quot;:-0.08,&quot;whites&quot;:0,&quot;blacks&quot;:-0.12,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0.06},&quot;details&quot;:{&quot;vignette&quot;:0.4,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.7,&quot;grain&quot;:0.22,&quot;grainSize&quot;:0.3,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0.12,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-6rd3" id="footage" class="clip" src="assets/source.mp4" playsinline data-has-audio="true" data-start="0" data-duration="29.33" data-track-index="0"></video>
         </div>
-        <div id="vignette"></div>
-        <div id="grain"></div>
-        <div id="flash"></div>
-        <div id="br-tl" class="bracket"></div>
-        <div id="br-tr" class="bracket"></div>
-        <div id="br-bl" class="bracket"></div>
-        <div id="br-br" class="bracket"></div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div data-hf-id="hf-jh4h" id="leak-host" data-composition-id="organic-light-leak-overlay" data-composition-src="compositions/organic-light-leak-overlay.html" data-start="20.9" data-duration="4.5" data-width="1080" data-height="1440" data-track-index="5"></div>
+        <div data-hf-id="hf-hmg5" id="flash"></div>
+        <div data-hf-id="hf-eywn" id="br-tl" class="bracket"></div>
+        <div data-hf-id="hf-b4a1" id="br-tr" class="bracket"></div>
+        <div data-hf-id="hf-rdfl" id="br-bl" class="bracket"></div>
+        <div data-hf-id="hf-a59b" id="br-br" class="bracket"></div>
       </div>
 
-      <div id="topbar"></div>
+      <div data-hf-id="hf-ysdh" id="topbar"></div>
 
-      <section id="intro" class="clip" data-start="0" data-duration="7.6" data-track-index="1">
-        <div id="topband"></div>
-        <div class="kicker" data-layout-allow-overlap id="k1">INCOMING // <b>B-17 FLYING FORTRESS</b></div>
-        <div class="title" data-layout-allow-overlap id="t1">
-          <span class="line"><span class="w" data-layout-allow-overlap>When</span><span class="w" data-layout-allow-overlap>the</span><span class="w" data-layout-allow-overlap>bomber</span></span>
-          <span class="line"><span class="w" data-layout-allow-overlap>is</span><span class="w" data-layout-allow-overlap>lowkey</span><span class="w" data-layout-allow-overlap>hard</span><span class="w" data-layout-allow-overlap>to</span><span class="w" data-layout-allow-overlap>kill…</span></span>
+      <section data-hf-id="hf-fkys" id="intro" class="clip" data-start="0" data-duration="7.6" data-track-index="1">
+        <div data-hf-id="hf-73hj" id="topband"></div>
+        <div data-hf-id="hf-qknh" class="kicker" data-layout-allow-overlap="" id="k1">INCOMING // <b data-hf-id="hf-wmvj">B-17 FLYING FORTRESS</b></div>
+        <div data-hf-id="hf-g3qf" class="title" data-layout-allow-overlap="" id="t1">
+          <span data-hf-id="hf-6c9z" class="line"><span data-hf-id="hf-yr9y" class="w" data-layout-allow-overlap="">When</span><span data-hf-id="hf-11e5" class="w" data-layout-allow-overlap="">the</span><span data-hf-id="hf-2ezx" class="w" data-layout-allow-overlap="">bomber</span></span>
+          <span data-hf-id="hf-tvt3" class="line"><span data-hf-id="hf-10ju" class="w" data-layout-allow-overlap="">is</span><span data-hf-id="hf-ax0r" class="w" data-layout-allow-overlap="">lowkey</span><span data-hf-id="hf-of2f" class="w" data-layout-allow-overlap="">hard</span><span data-hf-id="hf-b3ff" class="w" data-layout-allow-overlap="">to</span><span data-hf-id="hf-xsbo" class="w" data-layout-allow-overlap="">kill…</span></span>
         </div>
-        <div class="title" data-layout-allow-overlap id="t2">
-          <span class="line"><span class="w" data-layout-allow-overlap>So</span><span class="w" data-layout-allow-overlap>you</span><span class="w" data-layout-allow-overlap>just</span></span>
-          <span class="line"><span class="w" data-layout-allow-overlap>escort</span><span class="w" data-layout-allow-overlap>it…</span></span>
+        <div data-hf-id="hf-588s" class="title" data-layout-allow-overlap="" id="t2">
+          <span data-hf-id="hf-thi2" class="line"><span data-hf-id="hf-vjc0" class="w" data-layout-allow-overlap="">So</span><span data-hf-id="hf-6cix" class="w" data-layout-allow-overlap="">you</span><span data-hf-id="hf-pufg" class="w" data-layout-allow-overlap="">just</span></span>
+          <span data-hf-id="hf-t371" class="line"><span data-hf-id="hf-1xry" class="w" data-layout-allow-overlap="">escort</span><span data-hf-id="hf-w67r" class="w" data-layout-allow-overlap="">it…</span></span>
         </div>
-        <div id="target">
-          <div class="lbl">TARGET HP</div>
-          <div class="val" id="hp-num">100%</div>
-          <div id="hp-track"><div id="hp-fill"></div></div>
+        <div data-hf-id="hf-u972" id="target">
+          <div data-hf-id="hf-6839" class="lbl">TARGET HP</div>
+          <div data-hf-id="hf-f8mq" class="val" id="hp-num">100%</div>
+          <div data-hf-id="hf-039r" id="hp-track"><div data-hf-id="hf-4bkx" id="hp-fill"></div></div>
         </div>
       </section>
 
-      <section id="status-wrap" class="clip" data-start="6.8" data-duration="22.6" data-track-index="2">
-        <div id="status">
-          <div id="status-label">ESCORT STATUS</div>
-          <div id="rec"><span id="rec-dot"></span>LIVE</div>
-          <div class="status-text" data-layout-allow-overlap id="st1">Formation joined</div>
-          <div class="status-text" data-layout-allow-overlap id="st2">Close escort</div>
-          <div class="status-text" data-layout-allow-overlap id="st3">Bomber HP: 12%</div>
-          <div class="status-text" data-layout-allow-overlap id="st4">Escorting all the way down</div>
+      <section data-hf-id="hf-5zu1" id="status-wrap" class="clip" data-start="6.8" data-duration="22.6" data-track-index="2">
+        <div data-hf-id="hf-odm3" id="status">
+          <div data-hf-id="hf-cpgc" id="status-label">ESCORT STATUS</div>
+          <div data-hf-id="hf-3n7b" id="rec"><span data-hf-id="hf-xaai" id="rec-dot"></span>LIVE</div>
+          <div data-hf-id="hf-ytfk" class="status-text" data-layout-allow-overlap="" id="st1">Formation joined</div>
+          <div data-hf-id="hf-nem3" class="status-text" data-layout-allow-overlap="" id="st2">Close escort</div>
+          <div data-hf-id="hf-9i7l" class="status-text" data-layout-allow-overlap="" id="st3">Bomber HP: 12%</div>
+          <div data-hf-id="hf-9bgc" class="status-text" data-layout-allow-overlap="" id="st4">Escorting all the way down</div>
         </div>
       </section>
 
-      <section id="bottom-wrap" class="clip" data-start="0" data-duration="29.4" data-track-index="3">
-        <div id="bottom">
-          <div id="hud">
-            <div class="cell"><div class="lbl">ALTITUDE</div><div class="num" id="alt">6 400 M</div></div>
-            <div class="cell"><div class="lbl">SPEED</div><div class="num" id="spd">410 KM/H</div></div>
-            <div class="cell"><div class="lbl">ESCORTS</div><div class="num">1</div></div>
+      <section data-hf-id="hf-utgk" id="bottom-wrap" class="clip" data-start="0" data-duration="29.4" data-track-index="3">
+        <div data-hf-id="hf-hus0" id="bottom">
+          <div data-hf-id="hf-i9xo" id="hud">
+            <div data-hf-id="hf-7184" class="cell"><div data-hf-id="hf-shw4" class="lbl">ALTITUDE</div><div data-hf-id="hf-v2f8" class="num" id="alt">6 400 M</div></div>
+            <div data-hf-id="hf-am8c" class="cell"><div data-hf-id="hf-9b09" class="lbl">SPEED</div><div data-hf-id="hf-qhtl" class="num" id="spd">410 KM/H</div></div>
+            <div data-hf-id="hf-9fb9" class="cell"><div data-hf-id="hf-bgs7" class="lbl">ESCORTS</div><div data-hf-id="hf-1dhv" class="num">1</div></div>
           </div>
-          <div id="prog">
-            <div id="prog-fill"></div>
-            <div class="tick" style="left: 10.2%"></div>
-            <div class="tick" style="left: 24%"></div>
-            <div class="tick" style="left: 36.1%"></div>
-            <div class="tick" style="left: 47.2%"></div>
-            <div class="tick" style="left: 71.5%"></div>
+          <div data-hf-id="hf-bsq9" id="prog">
+            <div data-hf-id="hf-azcd" id="prog-fill"></div>
+            <div data-hf-id="hf-vuq0" class="tick" style="left: 10.2%"></div>
+            <div data-hf-id="hf-wwkz" class="tick" style="left: 24%"></div>
+            <div data-hf-id="hf-z2nx" class="tick" style="left: 36.1%"></div>
+            <div data-hf-id="hf-x1s0" class="tick" style="left: 47.2%"></div>
+            <div data-hf-id="hf-ob24" class="tick" style="left: 71.5%"></div>
           </div>
         </div>
       </section>
 
-      <section id="endcard" class="clip" data-start="29.33" data-duration="3.17" data-track-index="4">
-        <div id="end">
-          <div id="end-inner">
-            <div id="end-kicker">MISSION REPORT</div>
-            <div id="end-title">Bomber<br />escorted</div>
-            <div id="stamp">✔ to the ground</div>
-            <div id="end-sub">10/10 escort service. would escort again.</div>
+      <section data-hf-id="hf-vd1h" id="endcard" class="clip" data-start="29.33" data-duration="3.17" data-track-index="4">
+        <div data-hf-id="hf-37xg" id="end">
+          <div data-hf-id="hf-r847" id="end-inner">
+            <div data-hf-id="hf-51kq" id="end-kicker">MISSION REPORT</div>
+            <div data-hf-id="hf-7qe7" id="end-title">Bomber<br data-hf-id="hf-x5px">escorted</div>
+            <div data-hf-id="hf-s0qz" id="stamp">✔ to the ground</div>
+            <div data-hf-id="hf-7ayk" id="end-sub">10/10 escort service. would escort again.</div>
           </div>
         </div>
       </section>
@@ -424,12 +423,20 @@
           { scale: 1.02, rotation: 0, duration: next - t, ease: "expo.out", immediateRender: false },
           t
         );
-        tl.fromTo("#flash", { opacity: 0.85 }, { opacity: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, t);
+        tl.fromTo("#flash", { opacity: 0.45 }, { opacity: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, t);
       });
       tl.fromTo("#flash", { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
 
-      // ---- grain jitter (stepped, deterministic) ----
-      tl.to("#grain", { x: 120, y: -90, duration: 29.33, ease: "steps(240)" }, 0);
+      // ---- registry camera-shake: engine buzz all along, heavier once the bomber burns ----
+      cameraShake(tl, "#rig-a", { profile: "rig-6d-shake", intensity: 0.7, duration: 29.33, at: 0, fps: 30 });
+      cameraShake(tl, "#rig-b", { profile: "handheld-normal-strong", intensity: 0.6, duration: 15.5, at: 13.83, fps: 30 });
+
+      // ---- grade: exposure punch on every cut, bloom grows with the fire ----
+      cuts.forEach((t) => {
+        tl.fromTo("#footage", { "--hf-color-grading-exposure": 0.7 }, { "--hf-color-grading-exposure": -0.03, duration: 0.4, ease: "power2.out", immediateRender: false }, t);
+      });
+      tl.fromTo("#footage", { "--hf-color-grading-bloom": 0.12 }, { "--hf-color-grading-bloom": 0.3, duration: 1.2, ease: "power2.out" }, 13.83);
+      tl.to("#footage", { "--hf-color-grading-bloom": 0.4, duration: 1.0, ease: "power2.out" }, 20.97);
 
       // ---- brackets ----
       tl.from(".bracket", { scale: 1.6, opacity: 0, duration: 0.6, stagger: 0.06, ease: "back.out(2)" }, 0.15);
