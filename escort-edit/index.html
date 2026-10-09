@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Escort Mission</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Teko";
+        src: url("assets/fonts/teko-latin-700-normal.woff2") format("woff2");
+        font-weight: 700;
+      }
+      @font-face {
+        font-family: "InterBlack";
+        src: url("assets/fonts/inter-latin-900-normal.woff2") format("woff2");
+        font-weight: 900;
+      }
+      @font-face {
+        font-family: "Chakra";
+        src: url("assets/fonts/chakra-petch-latin-500-normal.woff2") format("woff2");
+        font-weight: 500;
+      }
+      :root {
+        --amber: #ffb43a;
+        --red: #ff4b3a;
+        --hud: #cfe8ff;
+      }
+      body {
+        margin: 0;
+        background: #050608;
+        color: #fff;
+        font-family: "Chakra", sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #050608;
+      }
+
+      /* ---------- footage ---------- */
+      #stage {
+        position: absolute;
+        left: 0;
+        top: 240px;
+        width: 1080px;
+        height: 1440px;
+        overflow: hidden;
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+      }
+      #footage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%);
+        pointer-events: none;
+      }
+      #flash {
+        position: absolute;
+        inset: 0;
+        background: #fff;
+        opacity: 0;
+        mix-blend-mode: screen;
+      }
+      #grain {
+        position: absolute;
+        inset: -200px;
+        opacity: 0.07;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        pointer-events: none;
+      }
+      .bracket {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border-color: rgba(207, 232, 255, 0.75);
+        border-style: solid;
+        border-width: 0;
+      }
+      #br-tl { left: 34px; top: 34px; border-top-width: 4px; border-left-width: 4px; }
+      #br-tr { right: 34px; top: 34px; border-top-width: 4px; border-right-width: 4px; }
+      #br-bl { left: 34px; bottom: 34px; border-bottom-width: 4px; border-left-width: 4px; }
+      #br-br { right: 34px; bottom: 34px; border-bottom-width: 4px; border-right-width: 4px; }
+
+      /* ---------- top band (hides burned-in captions for first 7s) ---------- */
+      #topband {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 640px;
+        background: linear-gradient(#050608 0%, #050608 86%, rgba(5, 6, 8, 0) 100%);
+      }
+      #topbar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 240px;
+        background: #050608;
+      }
+      .title {
+        position: absolute;
+        left: 60px;
+        right: 60px;
+        top: 150px;
+        font-family: "Teko", sans-serif;
+        font-weight: 700;
+        line-height: 0.86;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .line {
+        display: block;
+        overflow: hidden;
+        padding-top: 14px;
+      }
+      .w {
+        display: inline-block;
+        margin-right: 22px;
+      }
+      #t1 .line:first-child { font-size: 140px; }
+      #t1 .line:last-child { font-size: 90px; color: var(--hud); white-space: nowrap; }
+      #t2 .line:first-child { font-size: 150px; }
+      #t2 .line:last-child { font-size: 190px; color: var(--amber); }
+      .kicker {
+        position: absolute;
+        left: 64px;
+        top: 96px;
+        font-size: 30px;
+        letter-spacing: 8px;
+        color: rgba(207, 232, 255, 0.7);
+      }
+      .kicker b { color: var(--red); }
+
+      /* ---------- status line in top bar after 7s ---------- */
+      #status {
+        position: absolute;
+        left: 64px;
+        top: 92px;
+        right: 64px;
+        height: 110px;
+      }
+      #status-label {
+        font-size: 28px;
+        letter-spacing: 8px;
+        color: rgba(207, 232, 255, 0.6);
+      }
+      .status-text {
+        position: absolute;
+        left: 0;
+        top: 36px;
+        font-family: "Teko", sans-serif;
+        font-size: 92px;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transform-origin: left center;
+      }
+      #st1 { color: #fff; }
+      #st2 { color: var(--hud); }
+      #st3 { color: var(--red); }
+      #st4 { color: var(--amber); font-size: 74px; top: 44px; }
+      #rec {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 28px;
+        letter-spacing: 6px;
+        color: var(--red);
+      }
+      #rec-dot {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--red);
+        margin-right: 12px;
+      }
+
+      /* ---------- left target box (covers watermark on first shots) ---------- */
+      #target {
+        position: absolute;
+        left: 0;
+        top: 850px;
+        width: 360px;
+        height: 200px;
+        box-sizing: border-box;
+        padding: 22px 24px 22px 36px;
+        background: rgba(5, 6, 8, 0.97);
+        border-left: 6px solid var(--red);
+      }
+      #target .lbl {
+        font-size: 22px;
+        letter-spacing: 5px;
+        color: rgba(207, 232, 255, 0.6);
+      }
+      #target .val {
+        font-family: "Teko", sans-serif;
+        font-size: 64px;
+        line-height: 1;
+        margin-top: 6px;
+      }
+      #hp-track {
+        margin-top: 14px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      #hp-fill {
+        width: 100%;
+        height: 100%;
+        background: var(--red);
+        transform-origin: left center;
+      }
+
+      /* ---------- bottom HUD (hides watermark) ---------- */
+      #bottom {
+        position: absolute;
+        left: 0;
+        top: 1360px;
+        width: 1080px;
+        height: 560px;
+        background: linear-gradient(rgba(5, 6, 8, 0) 0%, #050608 18%, #050608 100%);
+      }
+      #hud {
+        position: absolute;
+        left: 64px;
+        right: 64px;
+        top: 200px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .cell .lbl {
+        font-size: 24px;
+        letter-spacing: 6px;
+        color: rgba(207, 232, 255, 0.55);
+      }
+      .cell .num {
+        font-family: "Teko", sans-serif;
+        font-size: 96px;
+        line-height: 1;
+        margin-top: 8px;
+      }
+      #prog {
+        position: absolute;
+        left: 64px;
+        right: 64px;
+        top: 410px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      #prog-fill {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--hud), var(--amber));
+        transform-origin: left center;
+      }
+      .tick {
+        position: absolute;
+        top: -10px;
+        width: 2px;
+        height: 26px;
+        background: rgba(207, 232, 255, 0.5);
+      }
+
+      /* ---------- end card ---------- */
+      #end {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 45%, #1a1f29 0%, #050608 70%);
+      }
+      #end-inner {
+        position: absolute;
+        left: 80px;
+        right: 80px;
+        top: 640px;
+        text-align: center;
+      }
+      #end-kicker {
+        font-size: 32px;
+        letter-spacing: 12px;
+        color: rgba(207, 232, 255, 0.6);
+      }
+      #end-title {
+        font-family: "Teko", sans-serif;
+        font-size: 210px;
+        line-height: 0.85;
+        margin-top: 30px;
+        text-transform: uppercase;
+      }
+      #stamp {
+        display: inline-block;
+        margin-top: 60px;
+        padding: 18px 40px 8px;
+        border: 8px solid var(--amber);
+        color: var(--amber);
+        font-family: "Teko", sans-serif;
+        font-size: 110px;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+      #end-sub {
+        margin-top: 50px;
+        font-size: 36px;
+        letter-spacing: 4px;
+        color: rgba(207, 232, 255, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1080"
+      data-height="1920"
+      data-duration="32.5"
+    >
+      <div id="stage">
+        <div id="cam">
+          <video
+            id="footage"
+            class="clip"
+            src="assets/source.mp4"
+            playsinline
+            data-has-audio="true"
+            data-start="0"
+            data-duration="29.33"
+            data-track-index="0"
+          ></video>
+        </div>
+        <div id="vignette"></div>
+        <div id="grain"></div>
+        <div id="flash"></div>
+        <div id="br-tl" class="bracket"></div>
+        <div id="br-tr" class="bracket"></div>
+        <div id="br-bl" class="bracket"></div>
+        <div id="br-br" class="bracket"></div>
+      </div>
+
+      <div id="topbar"></div>
+
+      <section id="intro" class="clip" data-start="0" data-duration="7.6" data-track-index="1">
+        <div id="topband"></div>
+        <div class="kicker" data-layout-allow-overlap id="k1">INCOMING // <b>B-17 FLYING FORTRESS</b></div>
+        <div class="title" data-layout-allow-overlap id="t1">
+          <span class="line"><span class="w" data-layout-allow-overlap>When</span><span class="w" data-layout-allow-overlap>the</span><span class="w" data-layout-allow-overlap>bomber</span></span>
+          <span class="line"><span class="w" data-layout-allow-overlap>is</span><span class="w" data-layout-allow-overlap>lowkey</span><span class="w" data-layout-allow-overlap>hard</span><span class="w" data-layout-allow-overlap>to</span><span class="w" data-layout-allow-overlap>kill…</span></span>
+        </div>
+        <div class="title" data-layout-allow-overlap id="t2">
+          <span class="line"><span class="w" data-layout-allow-overlap>So</span><span class="w" data-layout-allow-overlap>you</span><span class="w" data-layout-allow-overlap>just</span></span>
+          <span class="line"><span class="w" data-layout-allow-overlap>escort</span><span class="w" data-layout-allow-overlap>it…</span></span>
+        </div>
+        <div id="target">
+          <div class="lbl">TARGET HP</div>
+          <div class="val" id="hp-num">100%</div>
+          <div id="hp-track"><div id="hp-fill"></div></div>
+        </div>
+      </section>
+
+      <section id="status-wrap" class="clip" data-start="6.8" data-duration="22.6" data-track-index="2">
+        <div id="status">
+          <div id="status-label">ESCORT STATUS</div>
+          <div id="rec"><span id="rec-dot"></span>LIVE</div>
+          <div class="status-text" data-layout-allow-overlap id="st1">Formation joined</div>
+          <div class="status-text" data-layout-allow-overlap id="st2">Close escort</div>
+          <div class="status-text" data-layout-allow-overlap id="st3">Bomber HP: 12%</div>
+          <div class="status-text" data-layout-allow-overlap id="st4">Escorting all the way down</div>
+        </div>
+      </section>
+
+      <section id="bottom-wrap" class="clip" data-start="0" data-duration="29.4" data-track-index="3">
+        <div id="bottom">
+          <div id="hud">
+            <div class="cell"><div class="lbl">ALTITUDE</div><div class="num" id="alt">6 400 M</div></div>
+            <div class="cell"><div class="lbl">SPEED</div><div class="num" id="spd">410 KM/H</div></div>
+            <div class="cell"><div class="lbl">ESCORTS</div><div class="num">1</div></div>
+          </div>
+          <div id="prog">
+            <div id="prog-fill"></div>
+            <div class="tick" style="left: 10.2%"></div>
+            <div class="tick" style="left: 24%"></div>
+            <div class="tick" style="left: 36.1%"></div>
+            <div class="tick" style="left: 47.2%"></div>
+            <div class="tick" style="left: 71.5%"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="endcard" class="clip" data-start="29.33" data-duration="3.17" data-track-index="4">
+        <div id="end">
+          <div id="end-inner">
+            <div id="end-kicker">MISSION REPORT</div>
+            <div id="end-title">Bomber<br />escorted</div>
+            <div id="stamp">✔ to the ground</div>
+            <div id="end-sub">10/10 escort service. would escort again.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const cuts = [3.0, 7.033, 10.6, 13.833, 20.967];
+
+      // ---- camera: slow push + punch-in on every cut ----
+      tl.fromTo("#cam", { scale: 1.12 }, { scale: 1.0, duration: 3.0, ease: "power2.out" }, 0);
+      cuts.forEach((t, i) => {
+        const next = cuts[i + 1] ?? 29.33;
+        tl.fromTo(
+          "#cam",
+          { scale: 1.14, rotation: i % 2 ? -1.2 : 1.2 },
+          { scale: 1.02, rotation: 0, duration: next - t, ease: "expo.out", immediateRender: false },
+          t
+        );
+        tl.fromTo("#flash", { opacity: 0.85 }, { opacity: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, t);
+      });
+      tl.fromTo("#flash", { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power2.out" }, 0);
+
+      // ---- grain jitter (stepped, deterministic) ----
+      tl.to("#grain", { x: 120, y: -90, duration: 29.33, ease: "steps(240)" }, 0);
+
+      // ---- brackets ----
+      tl.from(".bracket", { scale: 1.6, opacity: 0, duration: 0.6, stagger: 0.06, ease: "back.out(2)" }, 0.15);
+
+      // ---- intro titles ----
+      tl.fromTo("#k1", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.1);
+      tl.fromTo(
+        "#t1 .w",
+        { yPercent: 110, opacity: 0, filter: "blur(10px)" },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.55, stagger: 0.09, ease: "power4.out" },
+        0.2
+      );
+      tl.to("#t1 .w", { yPercent: -110, opacity: 0, duration: 0.3, stagger: 0.03, ease: "power2.in" }, 2.7);
+      tl.fromTo(
+        "#t2 .w",
+        { yPercent: 110, opacity: 0, filter: "blur(10px)" },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, stagger: 0.12, ease: "power4.out" },
+        3.05
+      );
+      tl.fromTo(
+        "#t2 .line:last-child .w",
+        { scale: 1 },
+        { scale: 1.06, duration: 3.4, ease: "sine.inOut", transformOrigin: "left bottom" },
+        3.6
+      );
+      tl.to("#k1", { opacity: 0, duration: 0.3 }, 6.6);
+      tl.to("#t2 .w", { yPercent: -110, opacity: 0, duration: 0.3, stagger: 0.04, ease: "power2.in" }, 6.6);
+      tl.to("#topband", { yPercent: -100, duration: 0.5, ease: "power3.inOut" }, 6.85);
+
+      // ---- target box ----
+      tl.fromTo("#target", { xPercent: -120 }, { xPercent: 0, duration: 0.35, ease: "power3.out" }, 0);
+      const hp = { v: 100 };
+      tl.to(hp, {
+        v: 97,
+        duration: 2.2,
+        ease: "power1.in",
+        onUpdate: () => (document.getElementById("hp-num").textContent = Math.round(hp.v) + "%"),
+      }, 0.8);
+      tl.to("#hp-fill", { scaleX: 0.97, duration: 2.2, ease: "power1.in" }, 0.8);
+      tl.fromTo("#target", { opacity: 1 }, { opacity: 0.45, duration: 0.12, repeat: 5, yoyo: true, immediateRender: false }, 3.0);
+      tl.to("#target", { xPercent: -120, duration: 0.5, ease: "power3.in" }, 6.7);
+
+      // ---- status line ----
+      tl.fromTo("#status-label, #rec", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, 7.0);
+      tl.fromTo("#rec-dot", { opacity: 1 }, { opacity: 0.15, duration: 0.5, repeat: 21, yoyo: true, ease: "steps(1)" }, 7.0);
+      const st = [
+        ["#st1", 7.05, 10.6],
+        ["#st2", 10.62, 13.83],
+        ["#st3", 13.85, 20.97],
+        ["#st4", 20.99, 29.2],
+      ];
+      gsap.set(".status-text", { opacity: 0 });
+      st.forEach(([sel, a, b]) => {
+        tl.fromTo(sel, { opacity: 0, x: 60, skewX: -12 }, { opacity: 1, x: 0, skewX: 0, duration: 0.45, ease: "power4.out" }, a);
+        tl.to(sel, { opacity: 0, x: -60, duration: 0.25, ease: "power2.in" }, b - 0.25);
+      });
+      tl.fromTo("#st3", { color: "#ffffff" }, { color: "#ff4b3a", duration: 0.2, repeat: 7, yoyo: true, immediateRender: false }, 14.0);
+
+      // ---- bottom HUD ----
+      tl.fromTo("#hud .cell", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power3.out" }, 0.4);
+      tl.fromTo("#prog-fill", { scaleX: 0 }, { scaleX: 1, duration: 29.33, ease: "none" }, 0);
+      const fly = { alt: 6400, spd: 410 };
+      const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      const paint = () => {
+        document.getElementById("alt").textContent = fmt(fly.alt) + " M";
+        document.getElementById("spd").textContent = fmt(fly.spd) + " KM/H";
+      };
+      tl.to(fly, { alt: 6100, spd: 420, duration: 13.8, ease: "none", onUpdate: paint }, 0);
+      tl.to(fly, { alt: 900, spd: 690, duration: 15.5, ease: "power2.in", onUpdate: paint }, 13.83);
+      tl.fromTo("#alt", { color: "#ffffff" }, { color: "#ff4b3a", duration: 0.25, repeat: 15, yoyo: true }, 21.0);
+      tl.to("#bottom", { opacity: 0, duration: 0.35 }, 29.0);
+
+      // ---- end card ----
+      tl.fromTo("#end", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 29.33);
+      tl.fromTo("#end-kicker", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, 29.5);
+      tl.fromTo("#end-title", { opacity: 0, y: 60, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power4.out" }, 29.65);
+      tl.fromTo("#stamp", { opacity: 0, scale: 2.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.45, ease: "back.out(2.2)" }, 30.4);
+      tl.fromTo("#end-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 30.9);
+      tl.to("#end-inner", { opacity: 0, duration: 0.5 }, 32.0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
