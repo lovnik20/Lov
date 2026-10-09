@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 576px; height: 1024px; overflow: hidden; background: #0d1014; }
+  #stage { position: absolute; inset: 0; }
+  #cap {
+    position: absolute; left: 0; right: 0; top: 870px; text-align: center;
+    font: italic 700 46px "Liberation Serif", serif; color: #fff;
+    text-shadow: 0 0 6px #000, 2px 3px 0 #000, 0 0 18px rgba(0,0,0,.8);
+    transform-origin: 50% 50%;
+  }
+</style>
+</head>
+<body>
+<svg id="stage" viewBox="0 0 576 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c2633"/>
+      <stop offset=".6" stop-color="#3a4b5e"/>
+      <stop offset="1" stop-color="#4e6274"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#284558"/>
+      <stop offset="1" stop-color="#0f2130"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#d9ff9e"/>
+      <stop offset=".35" stop-color="#7cff4a"/>
+      <stop offset="1" stop-color="#7cff4a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shellG" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#8d7448"/>
+      <stop offset="1" stop-color="#4a3a22"/>
+    </radialGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0a050"/>
+      <stop offset="1" stop-color="#d27a2c"/>
+    </linearGradient>
+    <clipPath id="win"><polygon points="0,0 576,0 576,560 0,560"/></clipPath>
+    <clipPath id="shirtClip"><path id="shirtPath" d="M-10,1024 L10,880 Q30,820 110,810 L200,810 Q290,825 320,900 L345,1024 Z"/></clipPath>
+    <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="blur1"><feGaussianBlur stdDeviation="1.2"/></filter>
+  </defs>
+
+  <g id="cam">
+    <!-- outside the window -->
+    <g clip-path="url(#win)">
+      <rect width="576" height="560" fill="url(#sky)"/>
+      <g id="clouds" opacity=".55" fill="#18212c">
+        <ellipse cx="90" cy="70" rx="160" ry="55"/>
+        <ellipse cx="420" cy="40" rx="200" ry="60"/>
+        <ellipse cx="300" cy="140" rx="180" ry="40" fill="#25313f"/>
+      </g>
+      <polyline id="bolt" points="120,0 140,70 112,90 150,180 128,195 170,300" fill="none" stroke="#eaf6ff" stroke-width="5" opacity="0"/>
+      <rect id="flash" width="576" height="560" fill="#cfe6ff" opacity="0"/>
+
+      <!-- giant snail -->
+      <g id="snail">
+        <path d="M230,560 Q250,430 330,380 Q400,330 420,240 Q430,200 455,205 Q490,215 480,270 Q465,360 420,430 Q390,490 400,560 Z"
+              fill="#6f6a4a" stroke="#1c1a12" stroke-width="3"/>
+        <path d="M340,400 Q380,370 400,330 M360,450 Q395,420 420,380 M330,500 Q360,470 380,440" stroke="#4a4630" stroke-width="4" fill="none"/>
+        <circle cx="270" cy="330" r="150" fill="url(#shellG)" stroke="#1c1a12" stroke-width="4"/>
+        <path id="spiral" fill="none" stroke="#2e2414" stroke-width="7" stroke-linecap="round"/>
+        <path id="spiralHi" fill="none" stroke="#a88c5c" stroke-width="2" opacity=".6"/>
+        <!-- eye stalks -->
+        <path id="stalkL" d="M445,215 Q430,150 420,95" stroke="#6f6a4a" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <path id="stalkR" d="M465,220 Q490,160 505,110" stroke="#6f6a4a" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <circle id="glowL" cx="420" cy="92" r="40" fill="url(#glow)"/>
+        <circle id="glowR" cx="505" cy="106" r="40" fill="url(#glow)"/>
+        <circle id="eyeL" cx="420" cy="92" r="10" fill="#b8ff6a" stroke="#1c1a12" stroke-width="2"/>
+        <circle id="eyeR" cx="505" cy="106" r="10" fill="#b8ff6a" stroke="#1c1a12" stroke-width="2"/>
+      </g>
+
+      <!-- sea -->
+      <rect y="470" width="576" height="90" fill="url(#sea)"/>
+      <path id="waves" fill="#3d6176" opacity=".8"/>
+      <path id="foam" fill="none" stroke="#dfeef5" stroke-width="3" opacity=".7"/>
+      <g id="rain" stroke="#c7d8e6" stroke-width="1.6" opacity=".55"></g>
+    </g>
+
+    <!-- cockpit frame -->
+    <path d="M0,0 H576 V24 H0 Z M0,540 H576 V600 H0 Z" fill="#23272b"/>
+    <path d="M0,0 L70,0 L32,560 L0,560 Z" fill="#2b3035" stroke="#111" stroke-width="3"/>
+    <path d="M548,0 L576,0 L576,560 L556,560 Z" fill="#2b3035" stroke="#111" stroke-width="3"/>
+    <g fill="#5a6168"><circle cx="50" cy="60" r="4"/><circle cx="44" cy="160" r="4"/><circle cx="38" cy="260" r="4"/><circle cx="32" cy="360" r="4"/><circle cx="26" cy="460" r="4"/>
+      <circle cx="80" cy="12" r="4"/><circle cx="200" cy="12" r="4"/><circle cx="320" cy="12" r="4"/><circle cx="440" cy="12" r="4"/></g>
+    <rect y="560" width="576" height="464" fill="#16191c"/>
+
+    <!-- dashboard -->
+    <g>
+      <path d="M260,640 L576,610 L576,1024 L300,1024 Z" fill="#2a2f34" stroke="#0b0d0f" stroke-width="3"/>
+      <rect x="320" y="660" width="110" height="80" rx="6" fill="#0c1a12" stroke="#3a4148" stroke-width="4"/>
+      <path d="M330,720 L350,700 L370,710 L390,680 L420,690" stroke="#58e07a" stroke-width="2" fill="none"/>
+      <rect x="450" y="650" width="100" height="70" rx="6" fill="#0c1a12" stroke="#3a4148" stroke-width="4"/>
+      <g stroke="#58e07a" stroke-width="1.5" opacity=".8"><line x1="460" y1="670" x2="540" y2="670"/><line x1="460" y1="685" x2="520" y2="685"/><line x1="460" y1="700" x2="530" y2="700"/></g>
+      <circle cx="470" cy="900" r="70" fill="#07160d" stroke="#3a4148" stroke-width="6"/>
+      <circle cx="470" cy="900" r="45" fill="none" stroke="#2f8a4a" stroke-width="1.5"/>
+      <circle cx="470" cy="900" r="22" fill="none" stroke="#2f8a4a" stroke-width="1.5"/>
+      <line x1="400" y1="900" x2="540" y2="900" stroke="#2f8a4a" stroke-width="1"/>
+      <line x1="470" y1="830" x2="470" y2="970" stroke="#2f8a4a" stroke-width="1"/>
+      <path id="sweep" fill="#58e07a" opacity=".35"/>
+      <circle id="blip" cx="500" cy="870" r="5" fill="#9dff9a"/>
+      <g fill="#c0392b"><rect x="350" y="780" width="18" height="10" rx="2"/><rect x="380" y="780" width="18" height="10" rx="2"/></g>
+      <g fill="#d6a326"><circle cx="365" cy="820" r="6"/><circle cx="395" cy="820" r="6"/></g>
+    </g>
+
+    <!-- cat pilot -->
+    <g id="cat">
+      <!-- shirt with camo -->
+      <path d="M-10,1024 L10,880 Q30,820 110,810 L200,810 Q290,825 320,900 L345,1024 Z" fill="#56603e" stroke="#15170f" stroke-width="4"/>
+      <g clip-path="url(#shirtClip)">
+        <g fill="#33391f"><ellipse cx="60" cy="880" rx="30" ry="18"/><ellipse cx="190" cy="900" rx="38" ry="20"/><ellipse cx="120" cy="960" rx="32" ry="22"/><ellipse cx="270" cy="960" rx="36" ry="18"/><ellipse cx="30" cy="990" rx="26" ry="16"/></g>
+        <g fill="#7b8150"><ellipse cx="130" cy="860" rx="22" ry="12"/><ellipse cx="240" cy="880" rx="20" ry="12"/><ellipse cx="80" cy="940" rx="20" ry="13"/><ellipse cx="200" cy="990" rx="26" ry="14"/></g>
+        <g fill="#1e2214"><circle cx="100" cy="900" r="5"/><circle cx="160" cy="930" r="6"/><circle cx="230" cy="920" r="5"/><circle cx="290" cy="1000" r="6"/><circle cx="50" cy="950" r="5"/></g>
+      </g>
+      <path d="M110,812 L150,880 L200,812" fill="none" stroke="#15170f" stroke-width="4"/>
+      <!-- flag patch -->
+      <g transform="translate(32,900) rotate(-12)"><rect width="44" height="10" fill="#111"/><rect y="10" width="44" height="10" fill="#d0201a"/><rect y="20" width="44" height="10" fill="#f2c400"/><rect width="44" height="30" fill="none" stroke="#15170f" stroke-width="2"/></g>
+      <!-- arm reaching to the stick -->
+      <path d="M260,860 Q330,880 380,930 L360,965 Q310,925 250,915 Z" fill="#56603e" stroke="#15170f" stroke-width="4"/>
+      <ellipse cx="385" cy="950" rx="26" ry="22" fill="url(#fur)" stroke="#15170f" stroke-width="3.5"/>
+      <path d="M372,940 l4,16 M386,936 l3,18 M398,940 l1,15" stroke="#15170f" stroke-width="2"/>
+
+      <!-- head group (animated) -->
+      <g id="head">
+        <!-- ears -->
+        <path d="M68,660 L88,560 L145,620 Z" fill="url(#fur)" stroke="#15170f" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M84,640 L94,585 L128,622 Z" fill="#f2a7a0"/>
+        <path d="M172,620 L222,556 L236,656 Z" fill="url(#fur)" stroke="#15170f" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M186,622 L216,584 L224,640 Z" fill="#f2a7a0"/>
+        <!-- face -->
+        <path d="M50,700 Q48,615 150,605 Q252,615 250,700 Q262,720 244,736 Q256,752 236,770 Q205,815 150,816 Q95,815 64,770 Q44,752 56,736 Q38,720 50,700 Z"
+              fill="url(#fur)" stroke="#15170f" stroke-width="4" stroke-linejoin="round"/>
+        <!-- stripes -->
+        <g stroke="#a8561a" stroke-width="5" stroke-linecap="round" fill="none">
+          <path d="M150,612 L150,640"/><path d="M128,614 L134,638"/><path d="M172,614 L166,638"/>
+          <path d="M56,710 L80,714"/><path d="M60,730 L82,730"/><path d="M244,710 L220,714"/><path d="M240,730 L218,730"/>
+        </g>
+        <!-- brows (worried) -->
+        <path d="M86,664 Q108,648 130,660" stroke="#7a3d12" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M170,660 Q192,648 214,664" stroke="#7a3d12" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <!-- eyes -->
+        <g id="eyes">
+          <ellipse cx="110" cy="696" rx="26" ry="28" fill="#fff" stroke="#15170f" stroke-width="3.5"/>
+          <ellipse cx="190" cy="696" rx="26" ry="28" fill="#fff" stroke="#15170f" stroke-width="3.5"/>
+          <circle id="irisL" cx="114" cy="694" r="15" fill="#86c34a" stroke="#2f5212" stroke-width="2"/>
+          <circle id="irisR" cx="194" cy="694" r="15" fill="#86c34a" stroke="#2f5212" stroke-width="2"/>
+          <circle id="pupL" cx="114" cy="694" r="5" fill="#111"/>
+          <circle id="pupR" cx="194" cy="694" r="5" fill="#111"/>
+          <circle cx="120" cy="686" r="4" fill="#fff"/><circle cx="200" cy="686" r="4" fill="#fff"/>
+        </g>
+        <!-- muzzle -->
+        <ellipse cx="150" cy="760" rx="50" ry="34" fill="#f8e3c6" stroke="#15170f" stroke-width="3"/>
+        <path d="M140,730 L160,730 L150,742 Z" fill="#e57d86" stroke="#15170f" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M150,742 L150,750" stroke="#15170f" stroke-width="2.5"/>
+        <ellipse id="mouth" cx="150" cy="772" rx="17" ry="20" fill="#3a0f12" stroke="#15170f" stroke-width="3"/>
+        <ellipse id="tongue" cx="150" cy="784" rx="10" ry="6" fill="#e8737e"/>
+        <g fill="#fff"><path d="M138,756 l4,8 l4,-8 Z"/><path d="M154,756 l4,8 l4,-8 Z"/></g>
+        <!-- whiskers -->
+        <g stroke="#fff6e8" stroke-width="2" stroke-linecap="round" opacity=".9">
+          <path d="M104,752 L30,738"/><path d="M104,762 L28,766"/><path d="M196,752 L270,738"/><path d="M196,762 L272,766"/>
+        </g>
+        <!-- headset -->
+        <path d="M58,690 Q60,585 150,580 Q240,585 242,690" fill="none" stroke="#2c3326" stroke-width="12"/>
+        <path d="M58,690 Q60,585 150,580 Q240,585 242,690" fill="none" stroke="#15170f" stroke-width="3" transform="translate(0,-5)"/>
+        <rect x="28" y="672" width="42" height="72" rx="16" fill="#3a4231" stroke="#15170f" stroke-width="4"/>
+        <rect x="230" y="672" width="42" height="72" rx="16" fill="#3a4231" stroke="#15170f" stroke-width="4"/>
+        <path d="M50,736 Q60,800 112,792" fill="none" stroke="#15170f" stroke-width="5" stroke-linecap="round"/>
+        <rect x="108" y="785" width="16" height="12" rx="4" fill="#15170f"/>
+      </g>
+    </g>
+  </g>
+</svg>
+<div id="cap"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const W = 576, H = 1024;
+
+// deterministic pseudo-random
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+// spiral on the shell
+(function () {
+  const cx = 270, cy = 330;
+  let d = '', d2 = '';
+  for (let a = 0; a <= Math.PI * 7.2; a += 0.08) {
+    const r = 4 + a * 6.4;
+    const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a) * 0.95;
+    d += (d ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+    const r2 = r - 4;
+    d2 += (d2 ? 'L' : 'M') + (cx + r2 * Math.cos(a)).toFixed(1) + ',' + (cy + r2 * Math.sin(a) * 0.95).toFixed(1);
+  }
+  $('spiral').setAttribute('d', d);
+  $('spiralHi').setAttribute('d', d2);
+})();
+
+// rain drops
+const drops = [];
+for (let i = 0; i < 90; i++) {
+  const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  $('rain').appendChild(l);
+  drops.push({ el: l, x: rnd() * 700 - 60, y: rnd() * 560, len: 18 + rnd() * 22, sp: 700 + rnd() * 400 });
+}
+
+const WORDS = [
+  { t: 0.0, w: 'реалистичный' },
+  { t: 1.0, w: 'превратился' },
+];
+
+function wavePath(t, base, amp, k, speed) {
+  let d = `M0,${H}`;
+  for (let x = 0; x <= W; x += 12) {
+    const y = base + amp * Math.sin(x * k + t * speed) + amp * 0.5 * Math.sin(x * k * 2.3 - t * speed * 1.4);
+    d += ` L${x},${y.toFixed(1)}`;
+  }
+  return d + ` L${W},${H} Z`;
+}
+
+window.render = function (t) {
+  // slow Ken Burns zoom + tiny camera shake
+  const s = 1 + 0.07 * (t / 2);
+  const shake = t > 0.85 && t < 1.25 ? 3 * Math.sin(t * 90) : 0.6 * Math.sin(t * 13);
+  $('cam').setAttribute('transform',
+    `translate(${288 + shake},${560}) scale(${s}) translate(${-288},${-560 + shake * 0.5})`);
+
+  // snail rises and sways
+  const rise = 24 * (1 - Math.min(t / 2, 1));
+  $('snail').setAttribute('transform', `translate(${2 * Math.sin(t * 2)},${rise}) rotate(${1.2 * Math.sin(t * 1.6)},300,500)`);
+  const pulse = 1 + 0.25 * Math.sin(t * 9) + (t > 0.85 && t < 1.1 ? 0.6 : 0);
+  ['glowL', 'glowR'].forEach(id => $(id).setAttribute('r', (40 * pulse).toFixed(1)));
+
+  // lightning + flash around t≈0.9s
+  const f = t > 0.86 && t < 1.06 ? (t < 0.92 ? 1 : t < 0.96 ? 0.3 : t < 1.0 ? 0.9 : 0.2) : 0;
+  $('bolt').setAttribute('opacity', f);
+  $('flash').setAttribute('opacity', f * 0.45);
+
+  // sea
+  $('waves').setAttribute('d', wavePath(t, 500, 9, 0.03, 4));
+  $('foam').setAttribute('d', wavePath(t, 492, 7, 0.045, 5).replace(/ L576,1024 Z$/, '').replace(/^M0,1024 L/, 'M'));
+
+  // rain
+  drops.forEach(r => {
+    const y = (r.y + t * r.sp) % 600 - 20;
+    const x = r.x + y * 0.35;
+    r.el.setAttribute('x1', x); r.el.setAttribute('y1', y);
+    r.el.setAttribute('x2', x + r.len * 0.35); r.el.setAttribute('y2', y + r.len);
+  });
+
+  // radar sweep
+  const a = t * 3.2;
+  const x1 = 470 + 66 * Math.cos(a), y1 = 900 + 66 * Math.sin(a);
+  const x2 = 470 + 66 * Math.cos(a - 0.6), y2 = 900 + 66 * Math.sin(a - 0.6);
+  $('sweep').setAttribute('d', `M470,900 L${x2.toFixed(1)},${y2.toFixed(1)} A66,66 0 0 1 ${x1.toFixed(1)},${y1.toFixed(1)} Z`);
+  $('blip').setAttribute('opacity', (0.5 + 0.5 * Math.sin(t * 8)).toFixed(2));
+
+  // cat: startle jolt at the flash, eyes track the snail, mouth chatters
+  const jolt = t > 0.88 ? Math.exp(-(t - 0.88) * 6) * Math.sin((t - 0.88) * 40) * 6 : 0;
+  $('head').setAttribute('transform', `translate(0,${(-jolt).toFixed(2)}) rotate(${(-2 + jolt * 0.4).toFixed(2)},150,800)`);
+  const look = 6 + 2 * Math.sin(t * 3);
+  ['L', 'R'].forEach(k => {
+    const cx = (k === 'L' ? 110 : 190) + look, cy = 690 - 3;
+    $('iris' + k).setAttribute('cx', cx); $('iris' + k).setAttribute('cy', cy);
+    $('pup' + k).setAttribute('cx', cx); $('pup' + k).setAttribute('cy', cy);
+    $('pup' + k).setAttribute('r', t > 0.9 ? 3.5 : 5);
+  });
+  const mo = 18 + 4 * Math.sin(t * 22) + (t > 0.9 ? 4 : 0);
+  $('mouth').setAttribute('ry', mo.toFixed(1));
+  $('tongue').setAttribute('cy', (772 + mo * 0.6).toFixed(1));
+
+  // word-by-word caption with a pop-in
+  let cur = WORDS[0];
+  for (const w of WORDS) if (t >= w.t) cur = w;
+  const dt = t - cur.t;
+  const pop = dt < 0.12 ? 1.35 - 0.35 * (dt / 0.12) : 1;
+  const cap = $('cap');
+  cap.textContent = cur.w;
+  cap.style.transform = `scale(${pop.toFixed(3)})`;
+  cap.style.opacity = Math.min(1, (dt + 1 / 30) / 0.06).toFixed(2);
+};
+
+render(0);
+</script>
+</body>
+</html>
